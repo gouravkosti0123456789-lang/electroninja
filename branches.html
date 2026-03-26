@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Branches - ElectroNinja</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body class="min-h-screen">
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-ninja-black/95 backdrop-blur-sm border-b border-gray-800">
+    <div class="container mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <span class="text-3xl">⚡</span>
+          <span class="text-2xl font-bold gradient-text">ElectroNinja</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="/index.html" class="nav-link">Home</a>
+          <a href="/pyqs.html" class="nav-link">PYQs</a>
+          <a href="/ai-solver.html" class="nav-link">AI Solver</a>
+          <a href="/branches.html" class="nav-link active">Branches</a>
+          <a href="/about.html" class="nav-link">About</a>
+        </div>
+        <button id="mobile-menu-btn" class="md:hidden text-ninja-cyan">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+      <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
+        <a href="/index.html" class="block nav-link py-2">Home</a>
+        <a href="/pyqs.html" class="block nav-link py-2">PYQs</a>
+        <a href="/ai-solver.html" class="block nav-link py-2">AI Solver</a>
+        <a href="/branches.html" class="block nav-link active py-2">Branches</a>
+        <a href="/about.html" class="block nav-link py-2">About</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <section class="pt-32 pb-12 hero-pattern">
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="text-5xl md:text-6xl font-bold mb-6">
+        <span class="gradient-text">All RGPV Branches</span>
+      </h1>
+      <p class="text-xl text-gray-300 mb-4">Explore resources across different engineering branches</p>
+      <p class="text-gray-400">Currently optimized for ECE - More branches coming soon!</p>
+    </div>
+  </section>
+
+  <!-- Branches Grid -->
+  <section class="py-16">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+
+        <!-- ECE - Highlighted -->
+        <div class="card-hover border-4 border-ninja-purple relative overflow-hidden">
+          <div class="absolute top-4 right-4 bg-gradient-to-r from-ninja-purple to-ninja-cyan text-white px-4 py-1 rounded-full text-sm font-bold flex items-center space-x-1 animate-glow">
+            <span>My Branch</span>
+            <span>🔥</span>
+          </div>
+          <div class="text-6xl mb-4">⚡</div>
+          <h3 class="text-3xl font-bold text-ninja-cyan mb-3">ECE</h3>
+          <p class="text-lg font-semibold text-ninja-purple mb-4">Electronics & Communication Engineering</p>
+          <p class="text-gray-300 mb-6">Complete PYQs, AI Solutions, and resources for Sem 3 & 4. Unit-wise coverage of all ECE subjects.</p>
+
+          <div class="space-y-2 mb-6">
+            <div class="flex items-center text-sm text-gray-400">
+              <span class="text-ninja-cyan mr-2">✓</span>
+              <span>Full PYQ Coverage (2022-2025)</span>
+            </div>
+            <div class="flex items-center text-sm text-gray-400">
+              <span class="text-ninja-cyan mr-2">✓</span>
+              <span>AI-Powered Solutions</span>
+            </div>
+            <div class="flex items-center text-sm text-gray-400">
+              <span class="text-ninja-cyan mr-2">✓</span>
+              <span>Unit-wise Organization</span>
+            </div>
+            <div class="flex items-center text-sm text-gray-400">
+              <span class="text-ninja-cyan mr-2">✓</span>
+              <span>Semester 3 & 4 Available</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-3">
+            <a href="/pyqs.html" class="btn-primary text-center w-full">
+              View ECE PYQs
+            </a>
+            <a href="/ai-solver.html" class="btn-secondary text-center w-full">
+              Try AI Solver
+            </a>
+          </div>
+        </div>
+
+        <!-- AIML -->
+        <div class="card-hover opacity-75">
+          <div class="text-6xl mb-4">🤖</div>
+          <h3 class="text-2xl font-bold text-gray-300 mb-3">AIML</h3>
+          <p class="text-lg font-semibold text-gray-400 mb-4">Artificial Intelligence & Machine Learning</p>
+          <p class="text-gray-400 mb-6">Resources for AIML branch including Machine Learning, Deep Learning, AI algorithms, and more.</p>
+
+          <div class="space-y-2 mb-6">
+            <div class="flex items-center text-sm text-gray-500">
+              <span class="text-gray-600 mr-2">○</span>
+              <span>Coming Soon</span>
+            </div>
+            <div class="flex items-center text-sm text-gray-500">
+              <span class="text-gray-600 mr-2">○</span>
+              <span>PYQs & Solutions</span>
+            </div>
+            <div class="flex items-center text-sm text-gray-500">
+              <span class="text-gray-600 mr-2">○</span>
+              <span>All Semesters</span>
+            </div>
+          </div>
+
+          <button disabled class="w-full bg-gray-800 text-gray-500 px-6 py-3 rounded-lg font-bold cursor-not-allowed">
+            Coming Soon
+          </button>
+        </div>
+
+        <!-- CSE -->
+        <div class="card-hover opacity-75">
+          <div class="text-6xl mb-4">💻</div>
+          <h3 class="text-2xl font-bold text-gray-300 mb-3">CSE</h3>
+          <p class="text-lg font-semibold text-gray-400 mb-4">Computer Science & Engineering</p>
+          <p class="text-gray-400 mb-6">Resources for CSE branch including Data Structures, Algorithms, DBMS, Operating Systems, and more.</p>
+
+          <div class="space-y-2 mb-6">
+            <div class="flex items-center text-sm text-gray-500">
+              <span class="text-gray-600 mr-2">○</span>
+              <span>Coming Soon</span>
+            </div>
+            <div class="flex items-center text-sm text-gray-500">
+              <span class="text-gray-600 mr-2">○</span>
+              <span>PYQs & Solutions</span>
+            </div>
+            <div class="flex items-center text-sm text-gray-500">
+              <span class="text-gray-600 mr-2">○</span>
+              <span>All Semesters</span>
+            </div>
+          </div>
+
+          <button disabled class="w-full bg-gray-800 text-gray-500 px-6 py-3 rounded-lg font-bold cursor-not-allowed">
+            Coming Soon
+          </button>
+        </div>
+
+        <!-- CSIT -->
+        <div class="card-hover opacity-75">
+          <div class="text-6xl mb-4">🌐</div>
+          <h3 class="text-2xl font-bold text-gray-300 mb-3">CSIT</h3>
+          <p class="text-lg font-semibold text-gray-400 mb-4">Computer Science & Information Technology</p>
+          <p class="text-gray-400 mb-6">Resources for CSIT branch including Web Technologies, Networks, Cloud Computing, and more.</p>
+
+          <div class="space-y-2 mb-6">
+            <div class="flex items-center text-sm text-gray-500">
+              <span class="text-gray-600 mr-2">○</span>
+              <span>Coming Soon</span>
+            </div>
+            <div class="flex items-center text-sm text-gray-500">
+              <span class="text-gray-600 mr-2">○</span>
+              <span>PYQs & Solutions</span>
+            </div>
+            <div class="flex items-center text-sm text-gray-500">
+              <span class="text-gray-600 mr-2">○</span>
+              <span>All Semesters</span>
+            </div>
+          </div>
+
+          <button disabled class="w-full bg-gray-800 text-gray-500 px-6 py-3 rounded-lg font-bold cursor-not-allowed">
+            Coming Soon
+          </button>
+        </div>
+
+        <!-- CYCS -->
+        <div class="card-hover opacity-75">
+          <div class="text-6xl mb-4">🔐</div>
+          <h3 class="text-2xl font-bold text-gray-300 mb-3">CYCS</h3>
+          <p class="text-lg font-semibold text-gray-400 mb-4">Cyber Security</p>
+          <p class="text-gray-400 mb-6">Resources for Cyber Security branch including Cryptography, Network Security, Ethical Hacking, and more.</p>
+
+          <div class="space-y-2 mb-6">
+            <div class="flex items-center text-sm text-gray-500">
+              <span class="text-gray-600 mr-2">○</span>
+              <span>Coming Soon</span>
+            </div>
+            <div class="flex items-center text-sm text-gray-500">
+              <span class="text-gray-600 mr-2">○</span>
+              <span>PYQs & Solutions</span>
+            </div>
+            <div class="flex items-center text-sm text-gray-500">
+              <span class="text-gray-600 mr-2">○</span>
+              <span>All Semesters</span>
+            </div>
+          </div>
+
+          <button disabled class="w-full bg-gray-800 text-gray-500 px-6 py-3 rounded-lg font-bold cursor-not-allowed">
+            Coming Soon
+          </button>
+        </div>
+
+        <!-- More Branches Coming -->
+        <div class="card-hover border-2 border-dashed border-gray-700">
+          <div class="text-6xl mb-4">🚀</div>
+          <h3 class="text-2xl font-bold text-gray-300 mb-3">More Branches</h3>
+          <p class="text-lg font-semibold text-gray-400 mb-4">Mechanical, Civil, Electrical & More</p>
+          <p class="text-gray-400 mb-6">We're working on adding resources for all RGPV engineering branches. Stay tuned!</p>
+
+          <div class="space-y-2 mb-6">
+            <div class="flex items-center text-sm text-gray-500">
+              <span class="text-gray-600 mr-2">○</span>
+              <span>Mechanical Engineering</span>
+            </div>
+            <div class="flex items-center text-sm text-gray-500">
+              <span class="text-gray-600 mr-2">○</span>
+              <span>Civil Engineering</span>
+            </div>
+            <div class="flex items-center text-sm text-gray-500">
+              <span class="text-gray-600 mr-2">○</span>
+              <span>Electrical Engineering</span>
+            </div>
+          </div>
+
+          <button disabled class="w-full bg-gray-800 text-gray-500 px-6 py-3 rounded-lg font-bold cursor-not-allowed">
+            In Development
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Current Focus -->
+  <section class="py-16 bg-ninja-dark">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="card border-2 border-ninja-purple text-center p-12">
+          <div class="text-6xl mb-6">⚡🥷⚡</div>
+          <h2 class="text-4xl font-bold mb-6">
+            <span class="gradient-text">ECE Warriors Unite!</span>
+          </h2>
+          <p class="text-xl text-gray-300 mb-6">
+            ElectroNinja is currently laser-focused on providing the best resources for ECE students. We're perfecting the ECE experience before expanding to other branches.
+          </p>
+          <p class="text-lg text-gray-400 mb-8">
+            Our goal: Make every ECE student at RGPV crush their exams with confidence. Once we've achieved ninja-level perfection for ECE, we'll expand to help students in other branches.
+          </p>
+          <div class="flex flex-wrap justify-center gap-4">
+            <a href="/pyqs.html" class="btn-primary">
+              Start ECE Journey
+            </a>
+            <a href="/about.html" class="btn-secondary">
+              Learn More
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why ECE First -->
+  <section class="py-16">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center mb-12">
+        <span class="gradient-text">Why ECE First?</span>
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div class="card text-center">
+          <div class="text-5xl mb-4">🎯</div>
+          <h3 class="text-xl font-bold text-ninja-cyan mb-3">Focus & Quality</h3>
+          <p class="text-gray-400">Building a comprehensive, high-quality resource for one branch is better than spreading thin across many.</p>
+        </div>
+        <div class="card text-center">
+          <div class="text-5xl mb-4">🔬</div>
+          <h3 class="text-xl font-bold text-ninja-purple mb-3">Deep Expertise</h3>
+          <p class="text-gray-400">ECE requires specialized knowledge in electronics, circuits, signals - we're ensuring accuracy and depth.</p>
+        </div>
+        <div class="card text-center">
+          <div class="text-5xl mb-4">📈</div>
+          <h3 class="text-xl font-bold text-ninja-cyan mb-3">Proven Success</h3>
+          <p class="text-gray-400">Once ECE students succeed with our platform, we'll replicate the winning formula for other branches.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contribution CTA -->
+  <section class="py-16 bg-ninja-dark">
+    <div class="container mx-auto px-4">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-6">
+          <span class="gradient-text">Want Your Branch Added?</span>
+        </h2>
+        <p class="text-xl text-gray-300 mb-8">
+          If you're passionate about helping students in other branches, we'd love your contribution! Help us expand ElectroNinja to serve all RGPV students.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="https://github.com" target="_blank" class="btn-primary">
+            Contribute on GitHub
+          </a>
+          <a href="/about.html" class="btn-secondary">
+            Contact Us
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-ninja-black border-t border-gray-800 py-8">
+    <div class="container mx-auto px-4">
+      <div class="text-center">
+        <p class="text-gray-400 mb-2">Made for RGPV ECE Ninjas ⚡</p>
+        <a href="https://github.com" target="_blank" class="text-ninja-cyan hover:text-ninja-cyan-light transition-colors">
+          GitHub Repository
+        </a>
+        <p class="text-gray-600 text-sm mt-4">© 2025 ElectroNinja. Empowering ECE Warriors.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+  </script>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

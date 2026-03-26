@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ElectroNinja - RGPV ECE PYQs & AI Solutions</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body class="min-h-screen">
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-ninja-black/95 backdrop-blur-sm border-b border-gray-800">
+    <div class="container mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <span class="text-3xl">⚡</span>
+          <span class="text-2xl font-bold gradient-text">ElectroNinja</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="/index.html" class="nav-link active">Home</a>
+          <a href="/pyqs.html" class="nav-link">PYQs</a>
+          <a href="/ai-solver.html" class="nav-link">AI Solver</a>
+          <a href="/branches.html" class="nav-link">Branches</a>
+          <a href="/about.html" class="nav-link">About</a>
+        </div>
+        <button id="mobile-menu-btn" class="md:hidden text-ninja-cyan">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
+        <a href="/index.html" class="block nav-link active py-2">Home</a>
+        <a href="/pyqs.html" class="block nav-link py-2">PYQs</a>
+        <a href="/ai-solver.html" class="block nav-link py-2">AI Solver</a>
+        <a href="/branches.html" class="block nav-link py-2">Branches</a>
+        <a href="/about.html" class="block nav-link py-2">About</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="pt-32 pb-20 hero-pattern">
+    <div class="container mx-auto px-4">
+      <div class="text-center max-w-4xl mx-auto">
+        <div class="flex items-center justify-center space-x-4 mb-6 animate-float">
+          <span class="text-6xl">⚡</span>
+          <span class="text-6xl">🥷</span>
+          <span class="text-6xl">⚡</span>
+        </div>
+        <h1 class="text-5xl md:text-7xl font-bold mb-6 ninja-glow">
+          <span class="gradient-text">ElectroNinja</span>
+        </h1>
+        <p class="text-3xl md:text-4xl font-bold text-white mb-4">
+          Crush PYQs. Master Circuits. Become ElectroNinja.
+        </p>
+        <p class="text-xl md:text-2xl text-gray-300 mb-8">
+          RGPV ECE PYQs, Syllabus & AI Solutions
+        </p>
+        <p class="text-lg text-gray-400 mb-12">
+          Sem 3 & 4 Electronics & Communication Engineering<br>
+          Unit-wise Previous Year Questions, AI Instant Solutions, Free Forever
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="/pyqs.html" class="btn-primary lightning-effect">
+            Explore PYQs
+          </a>
+          <a href="/ai-solver.html" class="btn-secondary">
+            Try AI Solver
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="py-16 bg-ninja-dark">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="card stat-card text-center">
+          <div class="text-4xl mb-3">📚</div>
+          <div class="text-3xl font-bold text-ninja-cyan mb-2">100%</div>
+          <div class="text-gray-300">PYQ Coverage</div>
+          <div class="text-sm text-gray-500 mt-1">(2022-2025)</div>
+        </div>
+        <div class="card stat-card text-center">
+          <div class="text-4xl mb-3">🎯</div>
+          <div class="text-3xl font-bold text-ninja-purple mb-2">Fully</div>
+          <div class="text-gray-300">Syllabus Mapped</div>
+          <div class="text-sm text-gray-500 mt-1">Unit-wise</div>
+        </div>
+        <div class="card stat-card text-center">
+          <div class="text-4xl mb-3">🤖</div>
+          <div class="text-3xl font-bold text-ninja-cyan mb-2">AI-Powered</div>
+          <div class="text-gray-300">Solutions</div>
+          <div class="text-sm text-gray-500 mt-1">Instant Answers</div>
+        </div>
+        <div class="card stat-card text-center">
+          <div class="text-4xl mb-3">💰</div>
+          <div class="text-3xl font-bold text-ninja-purple mb-2">Zero Cost</div>
+          <div class="text-gray-300">Ninja Training</div>
+          <div class="text-sm text-gray-500 mt-1">Free Forever</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Semester Selector -->
+  <section class="py-16">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center mb-12">
+        <span class="gradient-text">Choose Your Semester</span>
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <a href="/pyqs.html?sem=3" class="card-hover text-center p-10">
+          <div class="text-6xl mb-4">🎓</div>
+          <h3 class="text-3xl font-bold text-ninja-cyan mb-3">Semester 3</h3>
+          <p class="text-gray-400">Mathematics-III, Electronic Devices & Circuits, Digital System Design, Network Analysis, Electronic Measurements</p>
+        </a>
+        <a href="/pyqs.html?sem=4" class="card-hover text-center p-10">
+          <div class="text-6xl mb-4">🚀</div>
+          <h3 class="text-3xl font-bold text-ninja-purple mb-3">Semester 4</h3>
+          <p class="text-gray-400">Signals & Systems, Analog Communication, Control Systems, Analog Circuits, Electromagnetic Theory</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="py-16 bg-ninja-dark">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center mb-12">
+        <span class="gradient-text">Ninja Features</span>
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="card-hover lightning-effect">
+          <div class="text-5xl mb-4">📋</div>
+          <h3 class="text-2xl font-bold text-ninja-cyan mb-3">Unit-Wise PYQs</h3>
+          <p class="text-gray-400">Organized by semester, subject, and unit. Find exactly what you need to practice.</p>
+        </div>
+        <div class="card-hover lightning-effect">
+          <div class="text-5xl mb-4">⚡</div>
+          <h3 class="text-2xl font-bold text-ninja-purple mb-3">Real-time AI Solutions</h3>
+          <p class="text-gray-400">Get instant, detailed solutions to any PYQ or concept question.</p>
+        </div>
+        <div class="card-hover lightning-effect">
+          <div class="text-5xl mb-4">🔌</div>
+          <h3 class="text-2xl font-bold text-ninja-cyan mb-3">ECE Specific Subjects</h3>
+          <p class="text-gray-400">Tailored for Electronics & Communication Engineering curriculum.</p>
+        </div>
+        <div class="card-hover lightning-effect">
+          <div class="text-5xl mb-4">🌐</div>
+          <h3 class="text-2xl font-bold text-ninja-purple mb-3">Multi-Branch Overview</h3>
+          <p class="text-gray-400">Explore AIML, CSE, CSIT, CYCS, and ECE - all branches covered.</p>
+        </div>
+        <div class="card-hover lightning-effect">
+          <div class="text-5xl mb-4">📊</div>
+          <h3 class="text-2xl font-bold text-ninja-cyan mb-3">Progress Tracker</h3>
+          <p class="text-gray-400">Track your preparation journey and identify weak areas. (Coming Soon)</p>
+        </div>
+        <div class="card-hover lightning-effect">
+          <div class="text-5xl mb-4">👥</div>
+          <h3 class="text-2xl font-bold text-ninja-purple mb-3">Ninja Community</h3>
+          <p class="text-gray-400">Join fellow RGPV warriors on their path to mastery. (Coming Soon)</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20">
+    <div class="container mx-auto px-4">
+      <div class="card max-w-3xl mx-auto text-center p-12 border-ninja-purple">
+        <h2 class="text-4xl font-bold mb-6">
+          <span class="gradient-text">Ready to Become an ElectroNinja?</span>
+        </h2>
+        <p class="text-xl text-gray-300 mb-8">
+          Start crushing PYQs today. Master circuits tomorrow. Ace your exams forever.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="/pyqs.html" class="btn-primary">
+            Start Practicing
+          </a>
+          <a href="/about.html" class="btn-secondary">
+            Learn More
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-ninja-black border-t border-gray-800 py-8">
+    <div class="container mx-auto px-4">
+      <div class="text-center">
+        <p class="text-gray-400 mb-2">
+          Made for RGPV ECE Ninjas ⚡
+        </p>
+        <a href="https://github.com" target="_blank" class="text-ninja-cyan hover:text-ninja-cyan-light transition-colors">
+          GitHub Repository
+        </a>
+        <p class="text-gray-600 text-sm mt-4">
+          © 2025 ElectroNinja. Empowering ECE Warriors.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Add active class to current page
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.nav-link').forEach(link => {
+      if (link.getAttribute('href').includes(currentPage)) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  </script>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

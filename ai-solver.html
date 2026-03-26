@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Solver - ElectroNinja</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body class="min-h-screen">
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-ninja-black/95 backdrop-blur-sm border-b border-gray-800">
+    <div class="container mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <span class="text-3xl">⚡</span>
+          <span class="text-2xl font-bold gradient-text">ElectroNinja</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="/index.html" class="nav-link">Home</a>
+          <a href="/pyqs.html" class="nav-link">PYQs</a>
+          <a href="/ai-solver.html" class="nav-link active">AI Solver</a>
+          <a href="/branches.html" class="nav-link">Branches</a>
+          <a href="/about.html" class="nav-link">About</a>
+        </div>
+        <button id="mobile-menu-btn" class="md:hidden text-ninja-cyan">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+      <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
+        <a href="/index.html" class="block nav-link py-2">Home</a>
+        <a href="/pyqs.html" class="block nav-link py-2">PYQs</a>
+        <a href="/ai-solver.html" class="block nav-link active py-2">AI Solver</a>
+        <a href="/branches.html" class="block nav-link py-2">Branches</a>
+        <a href="/about.html" class="block nav-link py-2">About</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <section class="pt-32 pb-12 hero-pattern">
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="text-5xl md:text-6xl font-bold mb-6">
+        <span class="gradient-text">AI-Powered Solutions</span>
+      </h1>
+      <p class="text-xl text-gray-300 mb-4">Get instant, detailed answers to any PYQ or ECE concept</p>
+      <p class="text-gray-400">Powered by advanced AI trained on ECE curriculum</p>
+    </div>
+  </section>
+
+  <!-- AI Chat Interface -->
+  <section class="py-8">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <!-- Chat Input -->
+        <div class="card p-6 mb-8">
+          <div class="flex items-start space-x-4">
+            <div class="text-4xl">🤖</div>
+            <div class="flex-1">
+              <textarea
+                id="question-input"
+                placeholder="Ask any PYQ or concept... e.g., 'Explain Laplace Transform' or 'Solve PN junction diode characteristics'"
+                class="w-full bg-ninja-black text-white border-2 border-gray-700 focus:border-ninja-cyan rounded-lg p-4 min-h-[120px] focus:outline-none resize-none"
+              ></textarea>
+              <div class="flex justify-between items-center mt-4">
+                <div class="text-sm text-gray-500">
+                  Tip: Be specific with your question for better results
+                </div>
+                <button id="ask-btn" class="btn-primary flex items-center space-x-2">
+                  <span>Get Solution</span>
+                  <span>⚡</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Questions -->
+        <div class="mb-8">
+          <h3 class="text-xl font-bold text-ninja-cyan mb-4">Quick Questions</h3>
+          <div class="flex flex-wrap gap-3">
+            <button class="quick-q px-4 py-2 bg-ninja-dark border border-ninja-purple rounded-lg text-sm hover:bg-ninja-purple/20 transition-all">
+              Explain PN Junction Diode
+            </button>
+            <button class="quick-q px-4 py-2 bg-ninja-dark border border-ninja-cyan rounded-lg text-sm hover:bg-ninja-cyan/20 transition-all">
+              Laplace Transform of t²
+            </button>
+            <button class="quick-q px-4 py-2 bg-ninja-dark border border-ninja-purple rounded-lg text-sm hover:bg-ninja-purple/20 transition-all">
+              BJT vs JFET comparison
+            </button>
+            <button class="quick-q px-4 py-2 bg-ninja-dark border border-ninja-cyan rounded-lg text-sm hover:bg-ninja-cyan/20 transition-all">
+              Boolean Algebra theorems
+            </button>
+            <button class="quick-q px-4 py-2 bg-ninja-dark border border-ninja-purple rounded-lg text-sm hover:bg-ninja-purple/20 transition-all">
+              Thevenin's Theorem
+            </button>
+            <button class="quick-q px-4 py-2 bg-ninja-dark border border-ninja-cyan rounded-lg text-sm hover:bg-ninja-cyan/20 transition-all">
+              Op-Amp applications
+            </button>
+          </div>
+        </div>
+
+        <!-- Response Area -->
+        <div id="response-area" class="hidden">
+          <div class="card p-6">
+            <div class="flex items-start space-x-4 mb-6">
+              <div class="text-4xl">⚡</div>
+              <div class="flex-1">
+                <h3 class="text-2xl font-bold text-ninja-cyan mb-2">Your Question:</h3>
+                <p id="display-question" class="text-gray-300 text-lg mb-4"></p>
+              </div>
+            </div>
+
+            <div id="loading" class="hidden text-center py-12">
+              <div class="inline-block animate-spin text-6xl mb-4">⚡</div>
+              <p class="text-xl text-ninja-cyan">Ninja AI is thinking...</p>
+            </div>
+
+            <div id="solution" class="hidden">
+              <div class="border-t border-gray-700 pt-6">
+                <h3 class="text-2xl font-bold text-ninja-purple mb-4">Solution:</h3>
+                <div id="solution-content" class="text-gray-200 space-y-4 leading-relaxed">
+                  <!-- Solution will be inserted here -->
+                </div>
+              </div>
+
+              <div class="mt-8 flex flex-wrap gap-4 justify-center border-t border-gray-700 pt-6">
+                <button id="ask-another" class="btn-secondary">
+                  Ask Another Question
+                </button>
+                <a href="/pyqs.html" class="btn-primary">
+                  Browse More PYQs
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Example Solutions -->
+  <section class="py-16 bg-ninja-dark">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center mb-12">
+        <span class="gradient-text">Example Solutions</span>
+      </h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
+
+        <!-- Example 1 -->
+        <div class="card">
+          <h3 class="text-xl font-bold text-ninja-cyan mb-3">
+            Q: Explain V-I characteristics of PN junction diode
+          </h3>
+          <div class="text-gray-300 space-y-2 text-sm">
+            <p><strong>Answer:</strong></p>
+            <p>The V-I characteristics of a PN junction diode show the relationship between voltage and current:</p>
+            <ul class="list-disc list-inside space-y-1 ml-4">
+              <li><strong>Forward Bias:</strong> When P-side is positive, current increases exponentially after cut-in voltage (0.7V for Si, 0.3V for Ge)</li>
+              <li><strong>Reverse Bias:</strong> Very small reverse saturation current flows until breakdown voltage</li>
+              <li><strong>Breakdown Region:</strong> At high reverse voltage, current increases sharply (Zener breakdown)</li>
+            </ul>
+            <p class="text-ninja-purple font-bold mt-4">Diagram included with detailed explanation</p>
+          </div>
+        </div>
+
+        <!-- Example 2 -->
+        <div class="card">
+          <h3 class="text-xl font-bold text-ninja-purple mb-3">
+            Q: Find Laplace transform of t²e³ᵗ
+          </h3>
+          <div class="text-gray-300 space-y-2 text-sm">
+            <p><strong>Answer:</strong></p>
+            <p>Using the Laplace transform formula and properties:</p>
+            <ul class="list-disc list-inside space-y-1 ml-4">
+              <li>L{tⁿ} = n!/sⁿ⁺¹</li>
+              <li>L{eᵃᵗf(t)} = F(s-a)</li>
+              <li>For t²: L{t²} = 2!/s³ = 2/s³</li>
+            </ul>
+            <p class="font-mono bg-ninja-black p-2 rounded mt-2">
+              L{t²e³ᵗ} = 2/(s-3)³
+            </p>
+            <p class="text-ninja-cyan font-bold mt-4">Step-by-step solution with verification</p>
+          </div>
+        </div>
+
+        <!-- Example 3 -->
+        <div class="card">
+          <h3 class="text-xl font-bold text-ninja-cyan mb-3">
+            Q: Compare BJT and JFET
+          </h3>
+          <div class="text-gray-300 space-y-2 text-sm">
+            <p><strong>Answer:</strong></p>
+            <p>Key differences between BJT and JFET:</p>
+            <ul class="list-disc list-inside space-y-1 ml-4">
+              <li><strong>Control:</strong> BJT is current-controlled, JFET is voltage-controlled</li>
+              <li><strong>Input Impedance:</strong> BJT has low, JFET has very high</li>
+              <li><strong>Type:</strong> BJT is bipolar, JFET is unipolar</li>
+              <li><strong>Noise:</strong> JFET has lower noise than BJT</li>
+            </ul>
+            <p class="text-ninja-purple font-bold mt-4">Comparison table with applications</p>
+          </div>
+        </div>
+
+        <!-- Example 4 -->
+        <div class="card">
+          <h3 class="text-xl font-bold text-ninja-purple mb-3">
+            Q: State and prove Thevenin's theorem
+          </h3>
+          <div class="text-gray-300 space-y-2 text-sm">
+            <p><strong>Answer:</strong></p>
+            <p><strong>Statement:</strong> Any linear bilateral network can be replaced by an equivalent circuit consisting of a voltage source Vth in series with resistance Rth.</p>
+            <p><strong>Proof steps:</strong></p>
+            <ul class="list-disc list-inside space-y-1 ml-4">
+              <li>Remove load resistance</li>
+              <li>Calculate Vth (open circuit voltage)</li>
+              <li>Calculate Rth (short all sources)</li>
+              <li>Replace network with Vth and Rth</li>
+            </ul>
+            <p class="text-ninja-cyan font-bold mt-4">Complete proof with example circuit</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="text-center mt-12">
+        <p class="text-gray-400 text-lg mb-6">
+          These are just examples. Ask AI Solver for any ECE question!
+        </p>
+        <a href="#question-input" class="btn-primary">
+          Try AI Solver Now
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="py-16">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-12">
+          <span class="gradient-text">Why Use AI Solver?</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="card text-center">
+            <div class="text-5xl mb-4">⚡</div>
+            <h3 class="text-xl font-bold text-ninja-cyan mb-2">Instant Answers</h3>
+            <p class="text-gray-400">Get solutions in seconds, not hours</p>
+          </div>
+          <div class="card text-center">
+            <div class="text-5xl mb-4">📚</div>
+            <h3 class="text-xl font-bold text-ninja-purple mb-2">Detailed Explanations</h3>
+            <p class="text-gray-400">Step-by-step solutions you can understand</p>
+          </div>
+          <div class="card text-center">
+            <div class="text-5xl mb-4">🎯</div>
+            <h3 class="text-xl font-bold text-ninja-cyan mb-2">ECE Focused</h3>
+            <p class="text-gray-400">Trained specifically on ECE curriculum</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-ninja-black border-t border-gray-800 py-8">
+    <div class="container mx-auto px-4">
+      <div class="text-center">
+        <p class="text-gray-400 mb-2">Made for RGPV ECE Ninjas ⚡</p>
+        <a href="https://github.com" target="_blank" class="text-ninja-cyan hover:text-ninja-cyan-light transition-colors">
+          GitHub Repository
+        </a>
+        <p class="text-gray-600 text-sm mt-4">© 2025 ElectroNinja. Empowering ECE Warriors.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    const questionInput = document.getElementById('question-input');
+    const askBtn = document.getElementById('ask-btn');
+    const responseArea = document.getElementById('response-area');
+    const displayQuestion = document.getElementById('display-question');
+    const loading = document.getElementById('loading');
+    const solution = document.getElementById('solution');
+    const solutionContent = document.getElementById('solution-content');
+    const askAnother = document.getElementById('ask-another');
+
+    // Sample solutions database
+    const sampleSolutions = {
+      'laplace': {
+        keywords: ['laplace', 'transform', 't²', 't2', 'exponential'],
+        solution: `
+          <h4 class="font-bold text-lg mb-2">Solution:</h4>
+          <p>To find the Laplace transform of t²e³ᵗ, we use the shifting property:</p>
+          <ol class="list-decimal list-inside space-y-2 ml-4">
+            <li>First, recall that L{t²} = 2!/s³ = 2/s³</li>
+            <li>Apply the shifting property: L{eᵃᵗf(t)} = F(s-a)</li>
+            <li>Here, a = 3, so we replace s with (s-3)</li>
+            <li><strong class="text-ninja-cyan">Final Answer: L{t²e³ᵗ} = 2/(s-3)³</strong></li>
+          </ol>
+          <div class="mt-4 p-4 bg-ninja-black rounded-lg">
+            <p class="text-sm text-gray-400">Verification: The result converges for Re(s) > 3</p>
+          </div>
+        `
+      },
+      'diode': {
+        keywords: ['diode', 'pn junction', 'v-i characteristic', 'semiconductor'],
+        solution: `
+          <h4 class="font-bold text-lg mb-2">V-I Characteristics of PN Junction Diode:</h4>
+          <ol class="list-decimal list-inside space-y-3 ml-4">
+            <li><strong class="text-ninja-cyan">Forward Bias Region:</strong>
+              <ul class="list-disc list-inside ml-6 mt-1">
+                <li>P-side connected to positive terminal</li>
+                <li>Barrier potential decreases</li>
+                <li>Current increases exponentially after cut-in voltage</li>
+                <li>Cut-in voltage: 0.7V (Silicon), 0.3V (Germanium)</li>
+              </ul>
+            </li>
+            <li><strong class="text-ninja-purple">Reverse Bias Region:</strong>
+              <ul class="list-disc list-inside ml-6 mt-1">
+                <li>N-side connected to positive terminal</li>
+                <li>Barrier potential increases</li>
+                <li>Very small reverse saturation current (μA range)</li>
+                <li>Current remains nearly constant until breakdown</li>
+              </ul>
+            </li>
+            <li><strong class="text-ninja-cyan">Breakdown Region:</strong>
+              <ul class="list-disc list-inside ml-6 mt-1">
+                <li>Occurs at high reverse voltage</li>
+                <li>Current increases sharply</li>
+                <li>Two types: Zener breakdown, Avalanche breakdown</li>
+              </ul>
+            </li>
+          </ol>
+          <div class="mt-4 p-4 bg-ninja-black rounded-lg">
+            <p class="font-bold text-ninja-purple mb-2">Diode Equation:</p>
+            <p class="font-mono">I = Is(e^(V/ηVT) - 1)</p>
+            <p class="text-sm text-gray-400 mt-2">Where Is = saturation current, η = ideality factor, VT = thermal voltage</p>
+          </div>
+        `
+      },
+      'bjt': {
+        keywords: ['bjt', 'jfet', 'transistor', 'compare', 'difference'],
+        solution: `
+          <h4 class="font-bold text-lg mb-2">Comparison between BJT and JFET:</h4>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-ninja-purple">
+                  <th class="p-3 text-ninja-cyan">Parameter</th>
+                  <th class="p-3 text-ninja-cyan">BJT</th>
+                  <th class="p-3 text-ninja-cyan">JFET</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr class="border-b border-gray-700">
+                  <td class="p-3 font-bold">Type</td>
+                  <td class="p-3">Bipolar (electrons & holes)</td>
+                  <td class="p-3">Unipolar (electrons or holes)</td>
+                </tr>
+                <tr class="border-b border-gray-700">
+                  <td class="p-3 font-bold">Control</td>
+                  <td class="p-3">Current controlled device</td>
+                  <td class="p-3">Voltage controlled device</td>
+                </tr>
+                <tr class="border-b border-gray-700">
+                  <td class="p-3 font-bold">Input Impedance</td>
+                  <td class="p-3">Low (few kΩ)</td>
+                  <td class="p-3">Very high (MΩ range)</td>
+                </tr>
+                <tr class="border-b border-gray-700">
+                  <td class="p-3 font-bold">Noise</td>
+                  <td class="p-3">Higher</td>
+                  <td class="p-3">Lower</td>
+                </tr>
+                <tr class="border-b border-gray-700">
+                  <td class="p-3 font-bold">Temperature Stability</td>
+                  <td class="p-3">Less stable</td>
+                  <td class="p-3">More stable</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold">Cost</td>
+                  <td class="p-3">Lower</td>
+                  <td class="p-3">Higher</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-4 p-4 bg-ninja-black rounded-lg">
+            <p class="font-bold text-ninja-purple mb-2">Applications:</p>
+            <p><strong>BJT:</strong> Audio amplifiers, switching circuits, power amplifiers</p>
+            <p><strong>JFET:</strong> High input impedance amplifiers, RF amplifiers, voltage controlled resistors</p>
+          </div>
+        `
+      },
+      'thevenin': {
+        keywords: ['thevenin', 'theorem', 'network', 'equivalent circuit'],
+        solution: `
+          <h4 class="font-bold text-lg mb-2">Thevenin's Theorem:</h4>
+          <p class="mb-4"><strong class="text-ninja-cyan">Statement:</strong> Any linear bilateral network containing voltage sources, current sources, and resistances can be replaced by an equivalent circuit consisting of a voltage source Vth in series with a resistance Rth.</p>
+
+          <h5 class="font-bold text-ninja-purple mb-2">Steps to find Thevenin Equivalent:</h5>
+          <ol class="list-decimal list-inside space-y-2 ml-4">
+            <li>Remove the load resistance RL from the network</li>
+            <li>Calculate Vth (Thevenin voltage):
+              <ul class="list-disc list-inside ml-6 mt-1">
+                <li>Find the open circuit voltage across the load terminals</li>
+                <li>Use any network analysis method (KVL, KCL, nodal, mesh)</li>
+              </ul>
+            </li>
+            <li>Calculate Rth (Thevenin resistance):
+              <ul class="list-disc list-inside ml-6 mt-1">
+                <li>Short all voltage sources (replace with wire)</li>
+                <li>Open all current sources (remove them)</li>
+                <li>Find equivalent resistance across load terminals</li>
+              </ul>
+            </li>
+            <li>Draw the Thevenin equivalent: Vth in series with Rth</li>
+            <li>Reconnect RL and calculate load current: IL = Vth/(Rth + RL)</li>
+          </ol>
+
+          <div class="mt-4 p-4 bg-ninja-black rounded-lg">
+            <p class="font-bold text-ninja-cyan mb-2">Advantages:</p>
+            <ul class="list-disc list-inside space-y-1">
+              <li>Simplifies complex circuits</li>
+              <li>Useful for analyzing circuits with variable load</li>
+              <li>Reduces calculation time significantly</li>
+            </ul>
+          </div>
+        `
+      },
+      'boolean': {
+        keywords: ['boolean', 'algebra', 'logic', 'gate', 'theorem'],
+        solution: `
+          <h4 class="font-bold text-lg mb-2">Boolean Algebra Theorems:</h4>
+
+          <h5 class="font-bold text-ninja-cyan mt-4 mb-2">Basic Theorems:</h5>
+          <ul class="list-disc list-inside space-y-1 ml-4">
+            <li>AND: A·0 = 0, A·1 = A, A·A = A, A·A' = 0</li>
+            <li>OR: A+0 = A, A+1 = 1, A+A = A, A+A' = 1</li>
+            <li>NOT: (A')' = A</li>
+          </ul>
+
+          <h5 class="font-bold text-ninja-purple mt-4 mb-2">Important Laws:</h5>
+          <ol class="list-decimal list-inside space-y-2 ml-4">
+            <li><strong>Commutative Law:</strong> A+B = B+A, A·B = B·A</li>
+            <li><strong>Associative Law:</strong> (A+B)+C = A+(B+C), (A·B)·C = A·(B·C)</li>
+            <li><strong>Distributive Law:</strong> A·(B+C) = A·B + A·C</li>
+            <li><strong>De Morgan's Laws:</strong>
+              <ul class="list-disc list-inside ml-6 mt-1">
+                <li>(A+B)' = A'·B'</li>
+                <li>(A·B)' = A'+B'</li>
+              </ul>
+            </li>
+            <li><strong>Absorption Law:</strong> A+A·B = A, A·(A+B) = A</li>
+          </ol>
+
+          <div class="mt-4 p-4 bg-ninja-black rounded-lg">
+            <p class="font-bold text-ninja-cyan mb-2">Applications:</p>
+            <p>Used for simplifying digital logic circuits, reducing gate count, and optimizing circuit designs using K-maps and algebraic methods.</p>
+          </div>
+        `
+      },
+      'opamp': {
+        keywords: ['op-amp', 'operational amplifier', 'application'],
+        solution: `
+          <h4 class="font-bold text-lg mb-2">Operational Amplifier Applications:</h4>
+
+          <ol class="list-decimal list-inside space-y-3 ml-4">
+            <li><strong class="text-ninja-cyan">Inverting Amplifier:</strong>
+              <ul class="list-disc list-inside ml-6 mt-1">
+                <li>Gain: Av = -Rf/Rin</li>
+                <li>Output is 180° out of phase with input</li>
+                <li>Virtual ground at inverting input</li>
+              </ul>
+            </li>
+            <li><strong class="text-ninja-purple">Non-Inverting Amplifier:</strong>
+              <ul class="list-disc list-inside ml-6 mt-1">
+                <li>Gain: Av = 1 + Rf/Rin</li>
+                <li>Output in phase with input</li>
+                <li>High input impedance</li>
+              </ul>
+            </li>
+            <li><strong class="text-ninja-cyan">Voltage Follower (Buffer):</strong>
+              <ul class="list-disc list-inside ml-6 mt-1">
+                <li>Gain = 1 (unity gain)</li>
+                <li>Impedance matching</li>
+                <li>Isolates stages</li>
+              </ul>
+            </li>
+            <li><strong class="text-ninja-purple">Summing Amplifier:</strong>
+              <ul class="list-disc list-inside ml-6 mt-1">
+                <li>Adds multiple input signals</li>
+                <li>Vo = -(V1 + V2 + V3 + ...)</li>
+                <li>Used in audio mixers</li>
+              </ul>
+            </li>
+            <li><strong class="text-ninja-cyan">Integrator & Differentiator:</strong>
+              <ul class="list-disc list-inside ml-6 mt-1">
+                <li>Integrator: Uses capacitor in feedback</li>
+                <li>Differentiator: Uses capacitor at input</li>
+                <li>Signal processing applications</li>
+              </ul>
+            </li>
+          </ol>
+
+          <div class="mt-4 p-4 bg-ninja-black rounded-lg">
+            <p class="font-bold text-ninja-purple mb-2">Ideal Op-Amp Characteristics:</p>
+            <ul class="list-disc list-inside space-y-1">
+              <li>Infinite input impedance</li>
+              <li>Zero output impedance</li>
+              <li>Infinite voltage gain</li>
+              <li>Infinite bandwidth</li>
+              <li>Zero offset voltage</li>
+            </ul>
+          </div>
+        `
+      }
+    };
+
+    function findSolution(question) {
+      const lowerQuestion = question.toLowerCase();
+
+      for (const [key, data] of Object.entries(sampleSolutions)) {
+        if (data.keywords.some(keyword => lowerQuestion.includes(keyword))) {
+          return data.solution;
+        }
+      }
+
+      return `
+        <p class="text-lg mb-4">This is a demo AI Solver interface. In a production environment, this would connect to a real AI API.</p>
+        <p class="mb-4">Your question: <strong class="text-ninja-cyan">"${question}"</strong></p>
+        <div class="p-4 bg-ninja-black rounded-lg">
+          <p class="font-bold text-ninja-purple mb-2">To get real solutions:</p>
+          <ul class="list-disc list-inside space-y-1">
+            <li>Try questions about: Laplace Transform, PN Junction Diode, BJT vs JFET, Thevenin's Theorem, Boolean Algebra, or Op-Amp</li>
+            <li>Or browse the <a href="/pyqs.html" class="text-ninja-cyan hover:underline">PYQs section</a> for more questions</li>
+          </ul>
+        </div>
+        <div class="mt-4 p-4 bg-ninja-purple/10 border border-ninja-purple rounded-lg">
+          <p class="font-bold mb-2">Sample Response Format:</p>
+          <p class="text-sm text-gray-300">The AI would provide a detailed step-by-step solution with:</p>
+          <ul class="list-disc list-inside text-sm text-gray-300 mt-2 space-y-1">
+            <li>Clear explanations of concepts</li>
+            <li>Mathematical derivations with proper notation</li>
+            <li>Diagrams and circuit representations</li>
+            <li>Important formulas highlighted</li>
+            <li>Practical applications and examples</li>
+          </ul>
+        </div>
+      `;
+    }
+
+    function askQuestion() {
+      const question = questionInput.value.trim();
+      if (!question) {
+        alert('Please enter a question!');
+        return;
+      }
+
+      displayQuestion.textContent = question;
+      responseArea.classList.remove('hidden');
+      loading.classList.remove('hidden');
+      solution.classList.add('hidden');
+
+      // Scroll to response
+      responseArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      // Simulate AI processing
+      setTimeout(() => {
+        loading.classList.add('hidden');
+        solution.classList.remove('hidden');
+        solutionContent.innerHTML = findSolution(question);
+      }, 1500);
+    }
+
+    askBtn.addEventListener('click', askQuestion);
+
+    questionInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && e.ctrlKey) {
+        askQuestion();
+      }
+    });
+
+    askAnother.addEventListener('click', () => {
+      questionInput.value = '';
+      responseArea.classList.add('hidden');
+      questionInput.focus();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Quick questions
+    document.querySelectorAll('.quick-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        questionInput.value = btn.textContent.trim();
+        questionInput.focus();
+      });
+    });
+
+    // Check URL for question parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlQuestion = urlParams.get('q');
+    if (urlQuestion) {
+      questionInput.value = urlQuestion;
+      questionInput.focus();
+    }
+  </script>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

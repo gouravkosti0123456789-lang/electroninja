@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PYQs - ElectroNinja</title>
+  <link rel="stylesheet" href="/src/style.css">
+  <style>
+    .topic-list {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    .topic-list.open {
+      max-height: 500px;
+    }
+    .topic-item {
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 12px;
+      margin: 8px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .topic-item .topic-name {
+      flex: 1;
+      font-size: 14px;
+      color: #e2e8f0;
+    }
+    .ai-solution-btn {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .ai-solution-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(16,185,129,0.5);
+    }
+    .solution-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.95);
+      z-index: 1000;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    .solution-modal-content {
+      max-width: 800px;
+      margin: 40px auto;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border-radius: 24px;
+      padding: 25px;
+      border: 1px solid #10b981;
+    }
+    .solution-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #10b981;
+    }
+    .solution-modal-header h3 {
+      font-size: 20px;
+      color: #10b981;
+    }
+    .close-solution {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 28px;
+      cursor: pointer;
+    }
+    .solution-loading {
+      text-align: center;
+      padding: 40px;
+    }
+    .solution-loading i {
+      font-size: 40px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .solution-answer {
+      line-height: 1.8;
+      font-size: 15px;
+      color: #e5e7eb;
+    }
+    .solution-answer .formula {
+      background: rgba(16,185,129,0.1);
+      padding: 12px;
+      border-radius: 12px;
+      font-family: monospace;
+      margin: 15px 0;
+      text-align: center;
+    }
+    .topic-toggle-btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 12px;
+      background: rgba(147,51,234,0.1);
+      border: 1px solid rgba(147,51,234,0.3);
+      border-radius: 10px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .topic-toggle-btn:hover {
+      background: rgba(147,51,234,0.2);
+    }
+    .topic-toggle-btn .unit-title {
+      font-weight: bold;
+      color: #a855f7;
+    }
+    .topic-toggle-btn .toggle-icon {
+      font-size: 12px;
+      transition: transform 0.2s;
+    }
+    .topic-toggle-btn.open .toggle-icon {
+      transform: rotate(180deg);
+    }
+    .error-message {
+      color: #ef4444;
+      background: rgba(239,68,68,0.1);
+      padding: 15px;
+      border-radius: 12px;
+      margin: 15px 0;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-ninja-black/95 backdrop-blur-sm border-b border-gray-800">
+    <div class="container mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <span class="text-3xl">⚡</span>
+          <span class="text-2xl font-bold gradient-text">ElectroNinja</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="/index.html" class="nav-link">Home</a>
+          <a href="/pyqs.html" class="nav-link active">PYQs</a>
+          <a href="/ai-solver.html" class="nav-link">AI Solver</a>
+          <a href="/branches.html" class="nav-link">Branches</a>
+          <a href="/about.html" class="nav-link">About</a>
+        </div>
+        <button id="mobile-menu-btn" class="md:hidden text-ninja-cyan">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+      <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
+        <a href="/index.html" class="block nav-link py-2">Home</a>
+        <a href="/pyqs.html" class="block nav-link active py-2">PYQs</a>
+        <a href="/ai-solver.html" class="block nav-link py-2">AI Solver</a>
+        <a href="/branches.html" class="block nav-link py-2">Branches</a>
+        <a href="/about.html" class="block nav-link py-2">About</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <section class="pt-32 pb-12 hero-pattern">
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="text-5xl md:text-6xl font-bold mb-6">
+        <span class="gradient-text">Previous Year Questions</span>
+      </h1>
+      <p class="text-xl text-gray-300 mb-4">Unit-wise Topics with AI-Powered Solutions</p>
+      <p class="text-gray-400">Click on any unit → See topics → Click "Get AI Answer" for instant solution</p>
+    </div>
+  </section>
+
+  <!-- Semester Tabs -->
+  <section class="py-8 bg-ninja-dark sticky top-[73px] z-40 border-b border-gray-800">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-center space-x-4">
+        <button class="semester-tab active px-8 py-3 rounded-lg font-bold transition-all" data-sem="3">
+          Semester 3
+        </button>
+        <button class="semester-tab px-8 py-3 rounded-lg font-bold transition-all" data-sem="4">
+          Semester 4
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Semester 3 Content -->
+  <section id="sem3-content" class="semester-content py-16">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-12 text-ninja-cyan">Semester 3 - ECE</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto" id="sem3-grid"></div>
+    </div>
+  </section>
+
+  <!-- Semester 4 Content -->
+  <section id="sem4-content" class="semester-content hidden py-16">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-12 text-ninja-purple">Semester 4 - ECE</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto" id="sem4-grid"></div>
+    </div>
+  </section>
+
+  <!-- Solution Modal -->
+  <div id="solutionModal" class="solution-modal">
+    <div class="solution-modal-content">
+      <div class="solution-modal-header">
+        <h3 id="solutionTitle">🤖 Gemini AI Solution</h3>
+        <button class="close-solution" onclick="closeSolutionModal()">&times;</button>
+      </div>
+      <div id="solutionContent" class="solution-loading">
+        <i class="fas fa-spinner"></i>
+        <p>Calling Gemini AI...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-ninja-black border-t border-gray-800 py-8">
+    <div class="container mx-auto px-4">
+      <div class="text-center">
+        <p class="text-gray-400 mb-2">Made for RGPV ECE Ninjas ⚡</p>
+        <a href="https://github.com" target="_blank" class="text-ninja-cyan hover:text-ninja-cyan-light transition-colors">
+          GitHub Repository
+        </a>
+        <p class="text-gray-600 text-sm mt-4">© 2025 ElectroNinja. Empowering ECE Warriors.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ✅ YOUR NEW GEMINI API KEY
+    const GEMINI_API_KEY = "AIzaSyCaJyFMmyMpPaUvAeThZgiwcFH5SusCQUk";
+    
+    // Topics Data
+    const topicsData = {
+      "Mathematics-III": {
+        1: ["Laplace Transform", "Properties of Laplace Transform", "Inverse Laplace Transform", "Convolution Theorem", "Applications to ODE"],
+        2: ["Fourier Series", "Even & Odd Functions", "Half Range Series", "Fourier Transform", "Parseval's Theorem"],
+        3: ["Analytic Functions", "Cauchy-Riemann Equations", "Cauchy's Integral Theorem", "Residue Theorem", "Complex Integration"],
+        4: ["Gradient", "Divergence", "Curl", "Line Integrals", "Stokes Theorem", "Gauss Divergence Theorem"],
+        5: ["Random Variables", "Probability Distributions", "Mean & Variance", "Correlation", "Regression"]
+      },
+      "Electronic Devices": {
+        1: ["PN Junction Diode", "V-I Characteristics", "Diode Equation", "Zener Diode", "Rectifiers", "Clippers"],
+        2: ["BJT", "Transistor Configurations", "Biasing Circuits", "JFET", "MOSFET Basics"],
+        3: ["MOSFET", "CMOS Inverter", "MOSFET Biasing", "Small Signal Model", "Frequency Response"],
+        4: ["Amplifiers", "Common Emitter", "Common Base", "Common Collector", "Darlington Pair"],
+        5: ["Feedback Amplifiers", "Oscillators", "Barkhausen Criterion", "RC Oscillators", "LC Oscillators"]
+      },
+      "Signals & Systems": {
+        1: ["Signal Classification", "Continuous & Discrete Signals", "Even & Odd Signals", "Periodic Signals", "Energy & Power Signals"],
+        2: ["Fourier Series", "Fourier Transform", "Properties of FT", "DTFT", "Sampling Theorem"],
+        3: ["Laplace Transform", "ROC", "Properties of Laplace", "Inverse Laplace", "System Analysis"],
+        4: ["Z-Transform", "ROC of Z-Transform", "Properties", "Inverse Z-Transform", "System Function"],
+        5: ["State Space Analysis", "Controllability", "Observability", "State Transition Matrix"]
+      },
+      "Analog Circuits": {
+        1: ["Op-Amp Basics", "Ideal Op-Amp", "Inverting Amplifier", "Non-Inverting Amplifier", "Voltage Follower"],
+        2: ["Summing Amplifier", "Integrator", "Differentiator", "Instrumentation Amplifier", "Log Amplifier"],
+        3: ["Active Filters", "Low Pass Filter", "High Pass Filter", "Band Pass Filter", "Notch Filter"],
+        4: ["Schmitt Trigger", "Astable Multivibrator", "Monostable Multivibrator", "555 Timer", "Phase Locked Loop"],
+        5: ["Voltage Regulators", "Series Regulator", "Shunt Regulator", "LM317", "Switching Regulators"]
+      },
+      "Analog Communication": {
+        1: ["AM Modulation", "Modulation Index", "DSB-SC", "SSB-SC", "VSB", "AM Demodulation"],
+        2: ["FM Modulation", "PM Modulation", "Narrowband FM", "Wideband FM", "FM Demodulation"],
+        3: ["Noise in Communication", "SNR", "Noise Figure", "Figure of Merit", "Pre-emphasis"],
+        4: ["Superheterodyne Receiver", "TRF Receiver", "AGC", "AFC", "Image Frequency"],
+        5: ["Pulse Modulation", "PAM", "PWM", "PPM", "PCM", "Delta Modulation"]
+      },
+      "Control Systems": {
+        1: ["Open Loop Control", "Closed Loop Control", "Transfer Function", "Block Diagram Reduction", "Signal Flow Graph"],
+        2: ["Time Response", "First Order System", "Second Order System", "Steady State Error", "Routh-Hurwitz"],
+        3: ["Root Locus", "Root Locus Rules", "Stability Analysis", "Effects of Poles & Zeros"],
+        4: ["Bode Plot", "Polar Plot", "Nyquist Stability", "Gain Margin", "Phase Margin"],
+        5: ["State Space Analysis", "Controllability", "Observability", "PID Controllers"]
+      },
+      "Electromagnetic Theory": {
+        1: ["Coordinate Systems", "Vector Calculus", "Gradient", "Divergence", "Curl", "Laplacian"],
+        2: ["Coulomb's Law", "Electric Field", "Gauss's Law", "Electric Potential", "Capacitance"],
+        3: ["Biot-Savart Law", "Ampere's Law", "Magnetic Field", "Inductance", "Magnetic Materials"],
+        4: ["Faraday's Law", "Displacement Current", "Maxwell's Equations", "Boundary Conditions"],
+        5: ["Wave Equation", "Plane Waves", "Poynting Vector", "Skin Effect", "Transmission Lines"]
+      }
+    };
+    
+    // Direct Gemini API Call
+    async function getGeminiAnswer(topic, subject) {
+      const modal = document.getElementById('solutionModal');
+      const solutionContent = document.getElementById('solutionContent');
+      const solutionTitle = document.getElementById('solutionTitle');
+      
+      solutionTitle.innerHTML = `🤖 Gemini AI: ${topic}`;
+      solutionContent.innerHTML = `<div class="solution-loading"><i class="fas fa-spinner"></i><p>Calling Gemini AI... Please wait (this may take 5-10 seconds)</p></div>`;
+      modal.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+      
+      const prompt = `You are an expert RGPV Electronics Engineering professor. Explain "${topic}" in detail for B.Tech students preparing for exams. Include:
+1. Clear definition and concept explanation
+2. Important formulas with proper mathematical notation
+3. Step-by-step explanation with examples if applicable
+4. Applications in Electronics and Communication
+5. Exam tips and common questions asked in RGPV
+
+Format with clear headings using **bold** for section titles. Keep it comprehensive but easy to understand.`;
+      
+      try {
+        // Using gemini-1.5-flash for faster responses
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.7,
+              maxOutputTokens: 1500,
+              topP: 0.9
+            }
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (data.error) {
+          console.error("Gemini API Error:", data.error);
+          solutionContent.innerHTML = `
+            <div class="error-message">
+              <strong>⚠️ API Error:</strong> ${data.error.message || "Unknown error"}<br><br>
+              <strong>Possible fixes:</strong><br>
+              • Check if API key is valid and enabled<br>
+              • Wait 1-2 minutes and try again<br>
+              • Enable Gemini API in Google Cloud Console
+            </div>
+            <div class="mt-4 p-4 bg-ninja-black rounded-lg">
+              <p class="text-ninja-cyan">💡 Tip: You can also ask questions in the AI Solver page!</p>
+            </div>
+          `;
+          return;
+        }
+        
+        let answer = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        
+        if (!answer) {
+          solutionContent.innerHTML = `
+            <div class="error-message">
+              <strong>⚠️ No response from Gemini AI</strong><br>
+              The API returned empty response. Please try again.
+            </div>
+          `;
+          return;
+        }
+        
+        // Format the answer for better display
+        answer = answer.replace(/\n/g, '<br>');
+        answer = answer.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        answer = answer.replace(/### (.*?)(<br>|$)/g, '<h4 style="color: #10b981; margin: 20px 0 10px 0;">$1</h4>');
+        answer = answer.replace(/## (.*?)(<br>|$)/g, '<h3 style="color: #a855f7; margin: 25px 0 12px 0;">$1</h3>');
+        answer = answer.replace(/\* (.*?)(<br>|$)/g, '• $1<br>');
+        
+        solutionContent.innerHTML = `<div class="solution-answer">${answer}</div>`;
+        
+      } catch (error) {
+        console.error("Fetch Error:", error);
+        solutionContent.innerHTML = `
+          <div class="error-message">
+            <strong>⚠️ Connection Error</strong><br>
+            ${error.message || "Could not connect to Gemini API"}<br><br>
+            <strong>Check:</strong><br>
+            • Internet connection<br>
+            • API key is correct: ${GEMINI_API_KEY.substring(0, 15)}...<br>
+            • Gemini API is enabled in Google Cloud Console
+          </div>
+          <div class="mt-4 p-4 bg-ninja-black rounded-lg">
+            <p class="text-ninja-cyan">💡 You can also try: <a href="/ai-solver.html" style="color: #10b981;">AI Solver Page</a></p>
+          </div>
+        `;
+      }
+    }
+    
+    function closeSolutionModal() {
+      document.getElementById('solutionModal').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+    
+    let currentOpenUnit = null;
+    
+    function toggleUnit(unitId) {
+      const topicList = document.getElementById(`topics-${unitId}`);
+      const btn = document.getElementById(`btn-${unitId}`);
+      
+      if (currentOpenUnit === unitId) {
+        topicList.classList.remove('open');
+        btn.classList.remove('open');
+        currentOpenUnit = null;
+      } else {
+        if (currentOpenUnit) {
+          const prevList = document.getElementById(`topics-${currentOpenUnit}`);
+          const prevBtn = document.getElementById(`btn-${currentOpenUnit}`);
+          if (prevList) prevList.classList.remove('open');
+          if (prevBtn) prevBtn.classList.remove('open');
+        }
+        topicList.classList.add('open');
+        btn.classList.add('open');
+        currentOpenUnit = unitId;
+      }
+    }
+    
+    function renderSubjects(semester) {
+      const subjects = {
+        3: {
+          "Mathematics-III": { icon: "📐", color: "#06b6d4" },
+          "Electronic Devices": { icon: "💡", color: "#9333ea" },
+          "Signals & Systems": { icon: "📡", color: "#06b6d4" },
+          "Analog Circuits": { icon: "⚡", color: "#9333ea" }
+        },
+        4: {
+          "Signals & Systems": { icon: "📡", color: "#06b6d4" },
+          "Analog Communication": { icon: "📻", color: "#9333ea" },
+          "Control Systems": { icon: "🎮", color: "#06b6d4" },
+          "Analog Circuits": { icon: "⚡", color: "#9333ea" },
+          "Electromagnetic Theory": { icon: "🧲", color: "#06b6d4" }
+        }
+      };
+      
+      const currentSubjects = subjects[semester];
+      const gridId = `sem${semester}-grid`;
+      const grid = document.getElementById(gridId);
+      if (!grid) return;
+      
+      grid.innerHTML = '';
+      
+      for (const [subject, data] of Object.entries(currentSubjects)) {
+        const unitsData = topicsData[subject] || {};
+        let unitsHtml = '';
+        
+        for (let unitNum = 1; unitNum <= 5; unitNum++) {
+          const topics = unitsData[unitNum] || [`Unit ${unitNum} Topics Coming Soon`];
+          const unitId = `${subject.replace(/\s/g, '')}-unit-${unitNum}`;
+          
+          const topicsHtml = topics.map(topic => `
+            <div class="topic-item">
+              <span class="topic-name">📌 ${topic}</span>
+              <button class="ai-solution-btn" onclick="getGeminiAnswer('${topic.replace(/'/g, "\\'")}', '${subject.replace(/'/g, "\\'")}')">
+                <i class="fas fa-robot"></i> Get AI Answer
+              </button>
+            </div>
+          `).join('');
+          
+          unitsHtml += `
+            <div class="topic-toggle-btn" id="btn-${unitId}" onclick="toggleUnit('${unitId}')">
+              <span class="unit-title">Unit ${unitNum}</span>
+              <span class="toggle-icon">▼</span>
+            </div>
+            <div id="topics-${unitId}" class="topic-list" style="background: rgba(0,0,0,0.3); border-radius: 10px; margin-bottom: 12px;">
+              <div style="padding: 8px 12px;">
+                ${topicsHtml}
+              </div>
+            </div>
+          `;
+        }
+        
+        grid.innerHTML += `
+          <div class="card-hover subject-card" style="background: rgba(26,26,46,0.8); border-radius: 20px; padding: 20px;">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <h3 class="text-2xl font-bold" style="color: ${data.color};">${subject}</h3>
+                <p class="text-sm text-gray-500">Click unit → See topics → Click "Get AI Answer"</p>
+              </div>
+              <span class="text-4xl">${data.icon}</span>
+            </div>
+            <div class="space-y-1">
+              ${unitsHtml}
+            </div>
+          </div>
+        `;
+      }
+    }
+    
+    // Semester tabs
+    const semesterTabs = document.querySelectorAll('.semester-tab');
+    const semesterContents = document.querySelectorAll('.semester-content');
+    
+    semesterTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const sem = tab.dataset.sem;
+        
+        semesterTabs.forEach(t => {
+          t.classList.remove('active', 'bg-ninja-purple', 'text-white');
+          t.classList.add('bg-ninja-black', 'text-gray-400');
+        });
+        
+        tab.classList.add('active', 'bg-ninja-purple', 'text-white');
+        tab.classList.remove('bg-ninja-black', 'text-gray-400');
+        
+        semesterContents.forEach(content => {
+          if (content.id === `sem${sem}-content`) {
+            content.classList.remove('hidden');
+          } else {
+            content.classList.add('hidden');
+          }
+        });
+        
+        renderSubjects(parseInt(sem));
+      });
+    });
+    
+    // Mobile menu
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenuBtn) {
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+    
+    window.onclick = function(event) {
+      const modal = document.getElementById('solutionModal');
+      if (event.target === modal) closeSolutionModal();
+    }
+    
+    renderSubjects(3);
+  </script>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
